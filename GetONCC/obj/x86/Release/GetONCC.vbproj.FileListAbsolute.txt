@@ -1,0 +1,11 @@
+C:\Users\user\Documents\Visual Studio 2010\Projects\GetONCC\GetONCC\bin\Release\GetONCC.exe
+C:\Users\user\Documents\Visual Studio 2010\Projects\GetONCC\GetONCC\bin\Release\GetONCC.pdb
+C:\Users\user\Documents\Visual Studio 2010\Projects\GetONCC\GetONCC\bin\Release\GetONCC.xml
+C:\Users\user\Documents\Visual Studio 2010\Projects\GetONCC\GetONCC\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Users\user\Documents\Visual Studio 2010\Projects\GetONCC\GetONCC\obj\x86\Release\GetONCC.Form1.resources
+C:\Users\user\Documents\Visual Studio 2010\Projects\GetONCC\GetONCC\obj\x86\Release\GetONCC.Resources.resources
+C:\Users\user\Documents\Visual Studio 2010\Projects\GetONCC\GetONCC\obj\x86\Release\GenerateResource.read.1.tlog
+C:\Users\user\Documents\Visual Studio 2010\Projects\GetONCC\GetONCC\obj\x86\Release\GenerateResource.write.1.tlog
+C:\Users\user\Documents\Visual Studio 2010\Projects\GetONCC\GetONCC\obj\x86\Release\GetONCC.exe
+C:\Users\user\Documents\Visual Studio 2010\Projects\GetONCC\GetONCC\obj\x86\Release\GetONCC.xml
+C:\Users\user\Documents\Visual Studio 2010\Projects\GetONCC\GetONCC\obj\x86\Release\GetONCC.pdb

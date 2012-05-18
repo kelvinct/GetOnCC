@@ -15,7 +15,7 @@ Public Class Form1
         BtnOff.Enabled = False
         GetStatus()
         Tableupdate()
-
+        Label3.Text = DgStatus.Rows.Count
     End Sub
     Private Function EncodeText(ByVal sText As String) As String
         Return WebUtility.HtmlEncode(sText)
@@ -26,59 +26,66 @@ Public Class Form1
         If Len(stock) < 5 Then
             For padzero = 1 To 5 - Len(stock)
                 temp = temp + "0"
-                Debug.Print(temp)
+                '  Debug.Print(temp)
             Next
         End If
         ' Response.Write temp & stock
         Convert5 = temp & stock
     End Function
     Function GetOnCC(ByVal SCTYCode) As String
-        Dim stocktime As String = "real"
-        Dim stocktype As String = "r"
-        Dim sLine As String
-        Dim nStart, nEnd As Integer
-        Dim StockName
-        Dim stkprice As String = 0
+        Try
+            Dim stocktime As String = "real"
+            Dim stocktype As String = "r"
+            Dim sLine As String
+            Dim nStart, nEnd As Integer
+            Dim StockName
+            Dim stkprice As String = 0
 
-        stocktype = "r"
-        sLine = DownloadHTMLPage("http://money18.on.cc/js/" & stocktime & "/quote/" & Convert5(SCTYCode) & "_" & stocktype & ".js?t=1319009536902", "http://money18.on.cc/")
-        Dim SearchChar As String = "M18.r_"
-        If InStr(sLine, SearchChar) > 0 Then
-
-
-            nStart = InStr(1, sLine, SearchChar) + Len(SearchChar)
-            Dim EndSearchChar As String = "="
-            nEnd = InStr(1, sLine, EndSearchChar)
-            StockName = Mid(sLine, nStart, nEnd - nStart)
-
-            SearchChar = "np: '"
-            nStart = InStr(nStart, sLine, SearchChar) + Len(SearchChar)
-            nEnd = InStr(nStart, sLine, "'")
-            stkprice = Mid(sLine, nStart, nEnd - nStart)
+            stocktype = "r"
+            sLine = DownloadHTMLPage("http://money18.on.cc/js/" & stocktime & "/quote/" & Convert5(SCTYCode) & "_" & stocktype & ".js?t=1319009536902", "http://money18.on.cc/")
+            Dim SearchChar As String = "M18.r_"
+            If InStr(sLine, SearchChar) > 0 Then
 
 
-            sLine = DownloadHTMLPage("http://money18.on.cc/js/daily/quote/" & Convert5(SCTYCode) & "_d.js?t=1319009536902", "http://money18.on.cc/")
-            SearchChar = "preCPrice:"""
-            nStart = InStr(1, sLine, SearchChar) + Len(SearchChar)
-            nEnd = InStr(nStart, sLine, """")
-            Dim StkpreCPrice = Mid(sLine, nStart, nEnd - nStart)
-            Debug.Print(StkpreCPrice)
+                nStart = InStr(1, sLine, SearchChar) + Len(SearchChar)
+                Dim EndSearchChar As String = "="
+                nEnd = InStr(1, sLine, EndSearchChar)
+                StockName = Mid(sLine, nStart, nEnd - nStart)
 
-            SearchChar = "nameChi:"""
-            nStart = InStr(1, sLine, SearchChar) + Len(SearchChar)
-            nEnd = InStr(nStart, sLine, """")
-            Dim nameChi = (Mid(sLine, nStart, nEnd - nStart))
-            Dim Change
-            Change = ((stkprice - StkpreCPrice) / StkpreCPrice) * 100
-            Change = FormatNumber((stkprice - StkpreCPrice), 3)
-            GetOnCC = StockName + "," + nameChi + "," + stkprice + "," + Change
+                SearchChar = "np: '"
+                nStart = InStr(nStart, sLine, SearchChar) + Len(SearchChar)
+                nEnd = InStr(nStart, sLine, "'")
+                stkprice = Mid(sLine, nStart, nEnd - nStart)
 
 
-            Debug.Print(GetOnCC)
-        Else
+                sLine = DownloadHTMLPage("http://money18.on.cc/js/daily/quote/" & Convert5(SCTYCode) & "_d.js?t=1319009536902", "http://money18.on.cc/")
+                SearchChar = "preCPrice:"""
+                nStart = InStr(1, sLine, SearchChar) + Len(SearchChar)
+                nEnd = InStr(nStart, sLine, """")
+                Dim StkpreCPrice = Mid(sLine, nStart, nEnd - nStart)
+                ' Debug.Print(StkpreCPrice)
 
-            GetOnCC = "null,null,null,null"
-        End If
+                SearchChar = "nameChi:"""
+                nStart = InStr(1, sLine, SearchChar) + Len(SearchChar)
+                nEnd = InStr(nStart, sLine, """")
+                Dim nameChi = (Mid(sLine, nStart, nEnd - nStart))
+                Dim Change
+                Change = ((stkprice - StkpreCPrice) / StkpreCPrice) * 100
+                Change = FormatNumber((stkprice - StkpreCPrice), 3)
+                GetOnCC = StockName + "," + nameChi + "," + stkprice + "," + Change
+
+
+                'Debug.Print(GetOnCC)
+            Else
+
+                GetOnCC = "null,null,null,null"
+            End If
+        Catch _Exception As Exception
+
+            'DgStatus.Rows.RemoveAt(e.RowIndex)
+        Finally
+
+        End Try
     End Function
 
     Public Function DownloadHTMLPage(ByVal _URL As String, ByVal refer As String) As String
@@ -121,53 +128,67 @@ Public Class Form1
     End Function
 
     Sub GetStatus()
-        Dim dt As DataTable
-        Dim ModuleColumn As DataColumn
-        Dim DescriptionCoulumn As DataColumn
-        Dim nameCoulumn As DataColumn
-        Dim CheckCoulumn As DataColumn
-        Dim dr As DataRow
+        Try
+            Dim dt As DataTable
+            Dim ModuleColumn As DataColumn
+            Dim DescriptionCoulumn As DataColumn
+            Dim nameCoulumn As DataColumn
+            Dim CheckCoulumn As DataColumn
+            Dim dr As DataRow
 
-        dt = New DataTable()
-        ModuleColumn = New DataColumn("Stock Code", Type.GetType("System.String"))
-        DescriptionCoulumn = New DataColumn("stock Name", Type.GetType("System.String"))
-        nameCoulumn = New DataColumn("Price", Type.GetType("System.String"))
-        CheckCoulumn = New DataColumn("Change", Type.GetType("System.String"))
+            dt = New DataTable()
+            ModuleColumn = New DataColumn("Stock Code", Type.GetType("System.String"))
+            DescriptionCoulumn = New DataColumn("stock Name", Type.GetType("System.String"))
+            nameCoulumn = New DataColumn("Price", Type.GetType("System.String"))
+            CheckCoulumn = New DataColumn("Change", Type.GetType("System.String"))
 
-        dt.Columns.Add(ModuleColumn)
-        dt.Columns.Add(DescriptionCoulumn)
-        dt.Columns.Add(nameCoulumn)
-        dt.Columns.Add(CheckCoulumn)
-        dsStatus.Tables.Add(dt)
+            dt.Columns.Add(ModuleColumn)
+            dt.Columns.Add(DescriptionCoulumn)
+            dt.Columns.Add(nameCoulumn)
+            dt.Columns.Add(CheckCoulumn)
+            dsStatus.Tables.Add(dt)
 
-        DgStatus.DataSource = dsStatus.Tables(0)
-        dsStatus.Tables(0).Clear()
-        DgStatus.Columns("Stock Code").Width = 100
-        DgStatus.Columns("Stock Name").Width = 100
-        DgStatus.Columns("Price").Width = 100
-        DgStatus.Columns("Change").Width = 100
-        '   DgStatus.Columns("Check").HeaderText = "Checking"
-        dr = dsStatus.Tables(0).NewRow
-        dr(0) = 5
+            DgStatus.DataSource = dsStatus.Tables(0)
+            dsStatus.Tables(0).Clear()
+            DgStatus.Columns("Stock Code").Width = 100
+            DgStatus.Columns("Stock Name").Width = 100
+            DgStatus.Columns("Price").Width = 100
+            DgStatus.Columns("Change").Width = 100
+            '   DgStatus.Columns("Check").HeaderText = "Checking"
+            dr = dsStatus.Tables(0).NewRow
+            dr(0) = 5
 
-        DgStatus.Item(0, 0).Value = (5)
-        Dim a As Array
-        a = EncodeText(GetOnCC(DgStatus.Item(0, 0).Value)).Split(",")
-        If a(0) = "null" Then
+            DgStatus.Item(0, 0).Value = (5)
+            Dim a As Array
+            a = EncodeText(GetOnCC(DgStatus.Item(0, 0).Value)).Split(",")
+            If a(0) = "null" Then
 
-            Return
-        End If
-        Debug.Print(a(0))
-        dsStatus.Tables(0).Rows.Add(dr)
+                Return
+            End If
+            'Debug.Print(a(0))
+            dsStatus.Tables(0).Rows.Add(dr)
+        Catch _Exception As Exception
+
+            'DgStatus.Rows.RemoveAt(e.RowIndex)
+        Finally
+
+        End Try
     End Sub
 
     Private Sub DgStatus_CellContentClick(sender As System.Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DgStatus.CellContentClick
-        Dim i, j As Integer
-        i = DgStatus.CurrentRow.Index
-        Debug.Print(DgStatus.Item(0, i).Value)
-        Debug.Print(DgStatus.Item(1, i).Value)
-        Debug.Print(DgStatus.Item(2, i).Value)
-        'Debug.Print(tem(3, i).Value
+        Try
+            Dim i, j As Integer
+            i = DgStatus.CurrentRow.Index
+            'Debug.Print(DgStatus.Item(0, i).Value)
+            'Debug.Print(DgStatus.Item(1, i).Value)
+            'Debug.Print(DgStatus.Item(2, i).Value)
+            'Debug.Print(tem(3, i).Value
+        Catch _Exception As Exception
+
+            'DgStatus.Rows.RemoveAt(e.RowIndex)
+        Finally
+
+        End Try
     End Sub
 
 
@@ -189,85 +210,106 @@ Public Class Form1
     End Sub
 
     Private Sub DgStatus_CellValidated(sender As System.Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DgStatus.CellValidated
-        Dim headerText As String = DgStatus.Columns(e.ColumnIndex).HeaderText
+        Dim result = False
+        Try
+            Dim headerText As String = DgStatus.Columns(e.ColumnIndex).HeaderText
 
-        ' Abort validation if cell is not in the CompanyName column.
-        If Not headerText.Equals("Stock Code") Then Return
-        Dim a As Array
-        Dim StockCode = (DgStatus.Item(e.ColumnIndex, e.RowIndex).Value.ToString())
-        If IsNumeric(StockCode) Then
-            a = EncodeText(GetOnCC(StockCode)).Split(",")
-            If a(0) = "null" Then
-                Return
-            End If
-            Debug.Print(a(0))
+            ' Abort validation if cell is not in the CompanyName column.
+            If Not headerText.Equals("Stock Code") Then Return
+            Dim a As Array
+            Dim StockCode = (DgStatus.Item(e.ColumnIndex, e.RowIndex).Value.ToString())
+            If IsNumeric(StockCode) Then
+                a = EncodeText(GetOnCC(StockCode)).Split(",")
+                If a(0) = "null" Then
+                    Return
+                End If
+                'Debug.Print(a(0))
+                DgStatus.Item(e.ColumnIndex, e.RowIndex).Value = Val(a(0))
+                DgStatus.Item(e.ColumnIndex + 1, e.RowIndex).Value = (a(1))
+                DgStatus.Item(e.ColumnIndex + 2, e.RowIndex).Value = (a(2))
+                DgStatus.Item(e.ColumnIndex + 3, e.RowIndex).Value = (a(3))
+                If a(3) < 0 Then
 
-            DgStatus.Item(e.ColumnIndex + 1, e.RowIndex).Value = (a(1))
-            DgStatus.Item(e.ColumnIndex + 2, e.RowIndex).Value = (a(2))
-            DgStatus.Item(e.ColumnIndex + 3, e.RowIndex).Value = (a(3))
-            If a(3) < 0 Then
+                    DgStatus(e.ColumnIndex + 3, e.RowIndex).Style.BackColor = Color.Red
+                    DgStatus(e.ColumnIndex + 3, e.RowIndex).Style.ForeColor = Color.White
+                    DgStatus(e.ColumnIndex + 3, e.RowIndex).Style.Format = Font.Bold
+                Else
+                    DgStatus(e.ColumnIndex + 3, e.RowIndex).Style.BackColor = Color.Green
+                    DgStatus(e.ColumnIndex + 3, e.RowIndex).Style.ForeColor = Color.White
 
-                DgStatus(e.ColumnIndex + 3, e.RowIndex).Style.BackColor = Color.Red
-                DgStatus(e.ColumnIndex + 3, e.RowIndex).Style.ForeColor = Color.White
-                DgStatus(e.ColumnIndex + 3, e.RowIndex).Style.Format = Font.Bold
+                End If
+
             Else
-                DgStatus(e.ColumnIndex + 3, e.RowIndex).Style.BackColor = Color.Green
-                DgStatus(e.ColumnIndex + 3, e.RowIndex).Style.ForeColor = Color.White
+                Dim i As Integer = (DgStatus.Rows.Count - 1)
+                Do While (i >= 0)
+                    i = (i - 1)
+                    For Each dr As DataGridViewRow In DgStatus.Rows
+                        If dr.Cells("Price").Value Is Nothing Then
+                            DgStatus.Rows.Remove(dr)
+                        End If
+                    Next
 
+                    For Each dr As DataGridViewRow In DgStatus.Rows
+                        If dr.Cells("stockname").Value Is Nothing Then
+                            DgStatus.Rows.Remove(dr)
+                        End If
+                    Next
+                Loop
             End If
-         
-        Else
-            Dim i As Integer = (DgStatus.Rows.Count - 1)
-            Do While (i >= 0)
-                i = (i - 1)
-                For Each dr As DataGridViewRow In DgStatus.Rows
-                    If dr.Cells("Price").Value Is Nothing Then
-                        DgStatus.Rows.Remove(dr)
-                    End If
-                Next
-            Loop
-        End If
+
+
+        Catch _Exception As Exception
+
+            'DgStatus.Rows.RemoveAt(e.RowIndex)
+        Finally
+
+        End Try
+
+
+
     End Sub
     Private Sub Tableupdate()
-        Dim i As Integer = (DgStatus.Rows.Count - 1)
-        Dim a As Array
-        Do While (i >= 0)
-            If IsNumeric(DgStatus.Item(0, i).Value) = True Then
-                Dim stockName = ""
-                a = EncodeText(GetOnCC(DgStatus.Item(0, i).Value)).Split(",")
-                For Each dr As DataGridViewRow In DgStatus.Rows
-                    stockName = DgStatus.Item(0, i).Value
-                    DgStatus.Item(1, i).Value = a(1)
-                    DgStatus.Item(2, i).Value = a(2)
-                    DgStatus.Item(3, i).Value = a(3)
-                    ' lblToolStrip.Text = "last update" + "(" + stockName + ")" + "========>" + DateTime.Now
-                Next
-            End If
-            If Timer1.Enabled = True Then
-                ToolStripProgressBar1.Increment(5)
-                If ToolStripProgressBar1.Value = 100 Then
-                    ToolStripProgressBar1.Value = 0
+        Try
+            Dim i As Integer = (DgStatus.Rows.Count - 1)
+            Dim a As Array
+            Do While (i >= 0)
+                If IsNumeric(DgStatus.Item(0, i).Value) = True Then
+                    Dim stockName = ""
+                    a = EncodeText(GetOnCC(DgStatus.Item(0, i).Value)).Split(",")
+                    For Each dr As DataGridViewRow In DgStatus.Rows
+                        stockName = DgStatus.Item(0, i).Value
+                        DgStatus.Item(0, i).Value = a(0)
+                        DgStatus.Item(1, i).Value = a(1)
+                        DgStatus.Item(2, i).Value = a(2)
+                        DgStatus.Item(3, i).Value = a(3)
+                        ' lblToolStrip.Text = "last update" + "(" + stockName + ")" + "========>" + DateTime.Now
+                    Next
                 End If
-            Else
-                ToolStripProgressBar1.Value = False
-            End If
+                If Timer1.Enabled = True Then
+                    ToolStripProgressBar1.Increment(5)
+                    If ToolStripProgressBar1.Value = 100 Then
+                        ToolStripProgressBar1.Value = 0
+                    End If
+                Else
+                    ToolStripProgressBar1.Value = False
+                End If
+                ShowTime.TextAlign = ContentAlignment.BottomRight
+                ShowTime.Text = DateTime.Now.ToString("hh:mm")
 
-            i = (i - 1)
-        Loop
+                i = (i - 1)
+            Loop
+        Catch _Exception As InvalidExpressionException
 
-    End Sub
 
-    Private Sub DgStatus_CellPainting(sender As System.Object, e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles DgStatus.CellPainting
+        Finally
 
-      
+        End Try
     End Sub
 
     Private Sub Timer1_Tick(sender As System.Object, e As System.EventArgs) Handles Timer1.Tick
         Tableupdate()
-        '  lblToolStrip.Text = "last update" + "========>" + DateTime.Now
+
     End Sub
-
-
 
     Private Sub BtnOff_Click(sender As System.Object, e As System.EventArgs) Handles BtnOff.Click
         Timer1.Enabled = False
@@ -276,25 +318,68 @@ Public Class Form1
     End Sub
 
     Private Sub ComboBox1_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles ComboBox1.SelectedIndexChanged
-        If ComboBox1.SelectedIndex >= 0 Then
-            ' lblToolStrip.Text = ComboBox1.SelectedItem.ToString
+        Try
+            If ComboBox1.SelectedIndex >= 0 Then
+                BtnOn.Enabled = True
+                BtnOff.Enabled = False
+            End If
+        Catch _Exception As Exception
 
-        End If
-        BtnOn.Enabled = True
-        BtnOff.Enabled = False
+            'DgStatus.Rows.RemoveAt(e.RowIndex)
+        Finally
+
+        End Try
 
     End Sub
 
     Private Sub BtnON_Click(sender As System.Object, e As System.EventArgs) Handles BtnOn.Click
-        If ComboBox1.SelectedIndex >= 0 Then
-            Timer1.Interval = 1000 * ComboBox1.SelectedItem.ToString
-            Timer1.Enabled = True
-            BtnOn.Enabled = False
-            BtnOff.Enabled = True
-        End If
+        Try
+            If ComboBox1.SelectedIndex >= 0 Then
+                Timer1.Interval = 1000 * ComboBox1.SelectedItem.ToString
+                Timer1.Enabled = True
+                BtnOn.Enabled = False
+                BtnOff.Enabled = True
+            End If
+        Catch _Exception As Exception
+
+            'DgStatus.Rows.RemoveAt(e.RowIndex)
+        Finally
+
+        End Try
     End Sub
 
     Private Sub StatusStrip1_ItemClicked(sender As System.Object, e As System.Windows.Forms.ToolStripItemClickedEventArgs) Handles StatusStrip1.ItemClicked
+
+    End Sub
+
+    Private Sub DgStatus_CellEndEdit(sender As System.Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DgStatus.CellEndEdit
+        If Len(DgStatus.Item(0, e.RowIndex).Value.ToString) > 0 Then
+            If DgStatus.Item(0, e.RowIndex).Value = "null" Then
+                DgStatus.Rows.RemoveAt(e.RowIndex)
+            ElseIf IsNumeric(DgStatus.Item(0, e.RowIndex).Value) = False Or IsNumeric(DgStatus.Item(3, e.RowIndex).Value) = False Then
+
+                DgStatus.Rows.RemoveAt(e.RowIndex)
+            End If
+        Else
+
+            DgStatus.Rows.RemoveAt(e.RowIndex)
+
+
+        End If
+        Dim i = 0
+        Dim a As Array
+        If DgStatus.Rows.Count - 1 > 1 Then
+            Do While (i < DgStatus.Rows.Count - 1)
+
+                If i = e.RowIndex Then
+                    Debug.Print(DgStatus.Item(0, e.RowIndex).Value)
+                ElseIf DgStatus.Item(0, i).Value = DgStatus.Item(0, i + 1).Value Then
+                    Debug.Print("same")
+                End If
+                i = i + 1
+            Loop
+        End If
+
 
     End Sub
 End Class

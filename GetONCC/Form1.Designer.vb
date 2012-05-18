@@ -26,9 +26,8 @@ Partial Class Form1
         Me.DataSet1 = New System.Data.DataSet()
         Me.DgStatus = New System.Windows.Forms.DataGridView()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
-        Me.lblToolStrip = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.lblSec = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripProgressBar1 = New System.Windows.Forms.ToolStripProgressBar()
+        Me.ShowTime = New System.Windows.Forms.ToolStripStatusLabel()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Button1 = New System.Windows.Forms.Button()
         Me.BtnOn = New System.Windows.Forms.Button()
@@ -38,6 +37,7 @@ Partial Class Form1
         Me.Label2 = New System.Windows.Forms.Label()
         Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
         Me.LineShape1 = New Microsoft.VisualBasic.PowerPacks.LineShape()
+        Me.Label3 = New System.Windows.Forms.Label()
         CType(Me.DataSet1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DgStatus, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StatusStrip1.SuspendLayout()
@@ -58,27 +58,26 @@ Partial Class Form1
         '
         'StatusStrip1
         '
-        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblToolStrip, Me.lblSec, Me.ToolStripProgressBar1})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 408)
+        Me.StatusStrip1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.StatusStrip1.Dock = System.Windows.Forms.DockStyle.None
+        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripProgressBar1, Me.ShowTime})
+        Me.StatusStrip1.Location = New System.Drawing.Point(321, 408)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(451, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(119, 22)
         Me.StatusStrip1.TabIndex = 4
         Me.StatusStrip1.Text = "StatusStrip1"
-        '
-        'lblToolStrip
-        '
-        Me.lblToolStrip.Name = "lblToolStrip"
-        Me.lblToolStrip.Size = New System.Drawing.Size(0, 17)
-        '
-        'lblSec
-        '
-        Me.lblSec.Name = "lblSec"
-        Me.lblSec.Size = New System.Drawing.Size(0, 17)
         '
         'ToolStripProgressBar1
         '
         Me.ToolStripProgressBar1.Name = "ToolStripProgressBar1"
         Me.ToolStripProgressBar1.Size = New System.Drawing.Size(100, 16)
+        '
+        'ShowTime
+        '
+        Me.ShowTime.Name = "ShowTime"
+        Me.ShowTime.Size = New System.Drawing.Size(0, 17)
+        Me.ShowTime.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.ShowTime.ToolTipText = "ShowTime"
         '
         'Timer1
         '
@@ -156,11 +155,21 @@ Partial Class Form1
         Me.LineShape1.Y1 = 37
         Me.LineShape1.Y2 = 37
         '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(31, 408)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(37, 12)
+        Me.Label3.TabIndex = 12
+        Me.Label3.Text = "Label3"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(451, 430)
+        Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.ComboBox1)
         Me.Controls.Add(Me.Label1)
@@ -186,15 +195,15 @@ Partial Class Form1
     Friend WithEvents StatusStrip1 As System.Windows.Forms.StatusStrip
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
     Friend WithEvents Button1 As System.Windows.Forms.Button
-    Friend WithEvents lblToolStrip As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents BtnOn As System.Windows.Forms.Button
     Friend WithEvents BtnOff As System.Windows.Forms.Button
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
-    Friend WithEvents lblSec As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents ToolStripProgressBar1 As System.Windows.Forms.ToolStripProgressBar
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents ShapeContainer1 As Microsoft.VisualBasic.PowerPacks.ShapeContainer
     Friend WithEvents LineShape1 As Microsoft.VisualBasic.PowerPacks.LineShape
+    Friend WithEvents ShowTime As System.Windows.Forms.ToolStripStatusLabel
+    Friend WithEvents Label3 As System.Windows.Forms.Label
 
 End Class

@@ -1,0 +1,21 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <Table1>
+    <Stock_x0020_Code>6</Stock_x0020_Code>
+    <stock_x0020_Name>電能實業</stock_x0020_Name>
+    <Price>57.950</Price>
+    <Change>-0.150</Change>
+  </Table1>
+  <Table1>
+    <Stock_x0020_Code>5</Stock_x0020_Code>
+    <stock_x0020_Name>匯豐控股</stock_x0020_Name>
+    <Price>62.950</Price>
+    <Change>-0.800</Change>
+  </Table1>
+  <Table1>
+    <Stock_x0020_Code>358</Stock_x0020_Code>
+    <stock_x0020_Name>江西銅業股份</stock_x0020_Name>
+    <Price>16.300</Price>
+    <Change>0.220</Change>
+  </Table1>
+</NewDataSet>

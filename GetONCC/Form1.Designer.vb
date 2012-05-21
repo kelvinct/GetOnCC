@@ -50,10 +50,10 @@ Partial Class Form1
         'DgStatus
         '
         Me.DgStatus.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DgStatus.Location = New System.Drawing.Point(15, 57)
+        Me.DgStatus.Location = New System.Drawing.Point(15, 102)
         Me.DgStatus.Name = "DgStatus"
         Me.DgStatus.RowTemplate.Height = 24
-        Me.DgStatus.Size = New System.Drawing.Size(424, 345)
+        Me.DgStatus.Size = New System.Drawing.Size(424, 300)
         Me.DgStatus.TabIndex = 3
         '
         'StatusStrip1

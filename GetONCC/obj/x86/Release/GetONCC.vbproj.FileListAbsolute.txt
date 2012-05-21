@@ -9,3 +9,8 @@ C:\Users\user\Documents\Visual Studio 2010\Projects\GetONCC\GetONCC\obj\x86\Rele
 C:\Users\user\Documents\Visual Studio 2010\Projects\GetONCC\GetONCC\obj\x86\Release\GetONCC.exe
 C:\Users\user\Documents\Visual Studio 2010\Projects\GetONCC\GetONCC\obj\x86\Release\GetONCC.xml
 C:\Users\user\Documents\Visual Studio 2010\Projects\GetONCC\GetONCC\obj\x86\Release\GetONCC.pdb
+C:\Users\user\documents\visual studio 2010\Projects\GetONCC\GetONCC\bin\Release\GetONCC.exe.manifest
+C:\Users\user\documents\visual studio 2010\Projects\GetONCC\GetONCC\bin\Release\GetONCC.application
+C:\Users\user\documents\visual studio 2010\Projects\GetONCC\GetONCC\obj\x86\Release\GetONCC.TrustInfo.xml
+C:\Users\user\documents\visual studio 2010\Projects\GetONCC\GetONCC\obj\x86\Release\GetONCC.exe.manifest
+C:\Users\user\documents\visual studio 2010\Projects\GetONCC\GetONCC\obj\x86\Release\GetONCC.application

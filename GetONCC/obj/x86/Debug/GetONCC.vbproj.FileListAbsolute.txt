@@ -20,3 +20,8 @@ C:\Users\user\documents\visual studio 2010\Projects\GetONCC\GetONCC\obj\x86\Debu
 C:\Users\user\documents\visual studio 2010\Projects\GetONCC\GetONCC\obj\x86\Debug\GetONCC.Resources.resources
 C:\Users\user\documents\visual studio 2010\Projects\GetONCC\GetONCC\obj\x86\Debug\GenerateResource.read.1.tlog
 C:\Users\user\documents\visual studio 2010\Projects\GetONCC\GetONCC\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\user\documents\visual studio 2010\Projects\GetONCC\GetONCC\bin\Debug\GetONCC.exe.manifest
+C:\Users\user\documents\visual studio 2010\Projects\GetONCC\GetONCC\bin\Debug\GetONCC.application
+C:\Users\user\documents\visual studio 2010\Projects\GetONCC\GetONCC\obj\x86\Debug\GetONCC.TrustInfo.xml
+C:\Users\user\documents\visual studio 2010\Projects\GetONCC\GetONCC\obj\x86\Debug\GetONCC.exe.manifest
+C:\Users\user\documents\visual studio 2010\Projects\GetONCC\GetONCC\obj\x86\Debug\GetONCC.application

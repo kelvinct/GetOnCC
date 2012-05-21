@@ -6,16 +6,48 @@ Imports System.Text.RegularExpressions
 Imports System.Runtime.Serialization.Json
 Imports System.Web
 Imports System.Windows.Forms
+Imports System.Data.OleDb
+
+Imports GetONCC
 Public Class Form1
     Dim dsStatus As New DataSet
     Dim ServerCount As Integer
     Dim dsXML As New DataSet
+    Private mConfig As GetOnCCConfig
+    Private mDBaseConnection As OleDbConnection
+    Private mMDBConnection As OleDbConnection
+    Private mNoOfUpdated As Integer
+    Private mNoOfInserted As Integer
+    Private mImportLogger As ImportLogger
+    Private ready As Boolean = False
     Private Sub Form1_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         BtnOn.Enabled = False
         BtnOff.Enabled = False
         GetStatus()
+        Dim FoundConfig As Boolean
+        dsStatus.ReadXml("data.xml")
         Tableupdate()
-        Label3.Text = DgStatus.Rows.Count
+        Dim Config As New GetOnCCConfig
+        Try
+            Config.loadXML("config.xml")
+            FoundConfig = True
+        Catch _Exception As Exception
+            FoundConfig = False
+            Debug.Print("config.xml is not found")
+        Finally
+        End Try
+        If FoundConfig = True Then
+            ' 'Label3.Text = DgStatus.Rows.Count
+            Dim TimeIntervial = Config.TimeIntervial
+            ComboBox1.SelectedIndex = TimeIntervial
+            Label3.Text = "Your select :" + ComboBox1.SelectedItem.ToString + "sec"
+        Else
+            Label3.Text = "Config.xml is not found"
+        End If
+        'mConfig.loadXML("config.xml")
+        'Dim Application = (mConfig.ApplicationName)
+        'dim ds as  DataSet = (DataSet) DgStatus.DataSource()
+
     End Sub
     Private Function EncodeText(ByVal sText As String) As String
         Return WebUtility.HtmlEncode(sText)
@@ -75,7 +107,7 @@ Public Class Form1
                 GetOnCC = StockName + "," + nameChi + "," + stkprice + "," + Change
 
 
-                'Debug.Print(GetOnCC)
+                Debug.Print(GetOnCC)
             Else
 
                 GetOnCC = "null,null,null,null"
@@ -146,6 +178,7 @@ Public Class Form1
             dt.Columns.Add(DescriptionCoulumn)
             dt.Columns.Add(nameCoulumn)
             dt.Columns.Add(CheckCoulumn)
+            ready = True
             dsStatus.Tables.Add(dt)
 
             DgStatus.DataSource = dsStatus.Tables(0)
@@ -155,10 +188,10 @@ Public Class Form1
             DgStatus.Columns("Price").Width = 100
             DgStatus.Columns("Change").Width = 100
             '   DgStatus.Columns("Check").HeaderText = "Checking"
-            dr = dsStatus.Tables(0).NewRow
-            dr(0) = 5
+            ' dr = dsStatus.Tables(0).NewRow
+            '  dr(0) = 5
 
-            DgStatus.Item(0, 0).Value = (5)
+            '   DgStatus.Item(0, 0).Value = (5)
             Dim a As Array
             a = EncodeText(GetOnCC(DgStatus.Item(0, 0).Value)).Split(",")
             If a(0) = "null" Then
@@ -166,25 +199,10 @@ Public Class Form1
                 Return
             End If
             'Debug.Print(a(0))
-            dsStatus.Tables(0).Rows.Add(dr)
+            'dsStatus.Tables(0).Rows.Add(dr)
+
         Catch _Exception As Exception
-
-            'DgStatus.Rows.RemoveAt(e.RowIndex)
-        Finally
-
-        End Try
-    End Sub
-
-    Private Sub DgStatus_CellContentClick(sender As System.Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DgStatus.CellContentClick
-        Try
-            Dim i, j As Integer
-            i = DgStatus.CurrentRow.Index
-            'Debug.Print(DgStatus.Item(0, i).Value)
-            'Debug.Print(DgStatus.Item(1, i).Value)
-            'Debug.Print(DgStatus.Item(2, i).Value)
-            'Debug.Print(tem(3, i).Value
-        Catch _Exception As Exception
-
+            ready = False
             'DgStatus.Rows.RemoveAt(e.RowIndex)
         Finally
 
@@ -194,18 +212,18 @@ Public Class Form1
 
 
     Private Sub DgStatus__RowEnter(sender As System.Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DgStatus.RowEnter
-        'Dim i As Integer
-        'For i = 0 To DgStatus.Rows(e.RowIndex).Cells.Count - 1
-        'DgStatus(i, e.RowIndex).Style _
-        '.BackColor = Color.Yellow
-        ' Next i
+        Dim i As Integer
+        '  For i = 0 To DgStatus.Rows(e.RowIndex).Cells.Count - 1
+        DgStatus(0, e.RowIndex).Style _
+        .BackColor = Color.Yellow
+        '  Next i
     End Sub
 
     Private Sub DgStatus_RowLeave(sender As System.Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DgStatus.RowLeave
-        ' Dim i As Integer
-        ''  For i = 0 To DgStatus.Rows(e.RowIndex).Cells.Count - 1
-        'DgStatus(i, e.RowIndex).Style _
-        '.BackColor = Color.Empty
+        Dim i As Integer
+        'For i = 0 To DgStatus.Rows(e.RowIndex).Cells.Count - 1
+        DgStatus(0, e.RowIndex).Style _
+        .BackColor = Color.Empty
         '  Next i
     End Sub
 
@@ -224,20 +242,10 @@ Public Class Form1
                     Return
                 End If
                 'Debug.Print(a(0))
-                DgStatus.Item(e.ColumnIndex, e.RowIndex).Value = Val(a(0))
+                ' DgStatus.Item(e.ColumnIndex, e.RowIndex).Value = Val(a(0))
                 DgStatus.Item(e.ColumnIndex + 1, e.RowIndex).Value = (a(1))
                 DgStatus.Item(e.ColumnIndex + 2, e.RowIndex).Value = (a(2))
                 DgStatus.Item(e.ColumnIndex + 3, e.RowIndex).Value = (a(3))
-                If a(3) < 0 Then
-
-                    DgStatus(e.ColumnIndex + 3, e.RowIndex).Style.BackColor = Color.Red
-                    DgStatus(e.ColumnIndex + 3, e.RowIndex).Style.ForeColor = Color.White
-                    DgStatus(e.ColumnIndex + 3, e.RowIndex).Style.Format = Font.Bold
-                Else
-                    DgStatus(e.ColumnIndex + 3, e.RowIndex).Style.BackColor = Color.Green
-                    DgStatus(e.ColumnIndex + 3, e.RowIndex).Style.ForeColor = Color.White
-
-                End If
 
             Else
                 Dim i As Integer = (DgStatus.Rows.Count - 1)
@@ -270,6 +278,7 @@ Public Class Form1
     End Sub
     Private Sub Tableupdate()
         Try
+            Debug.Print("tableupdate")
             Dim i As Integer = (DgStatus.Rows.Count - 1)
             Dim a As Array
             Do While (i >= 0)
@@ -278,10 +287,25 @@ Public Class Form1
                     a = EncodeText(GetOnCC(DgStatus.Item(0, i).Value)).Split(",")
                     For Each dr As DataGridViewRow In DgStatus.Rows
                         stockName = DgStatus.Item(0, i).Value
-                        DgStatus.Item(0, i).Value = a(0)
                         DgStatus.Item(1, i).Value = a(1)
                         DgStatus.Item(2, i).Value = a(2)
                         DgStatus.Item(3, i).Value = a(3)
+                        If DgStatus.Item(3, i).Value < 0 Then
+
+                            DgStatus.Item(3, i).Style.BackColor = Color.Red
+                            DgStatus.Item(3, i).Style.ForeColor = Color.White
+                            DgStatus.Item(3, i).Style.Format = Font.Bold
+                        Else
+                            DgStatus.Item(3, i).Style.BackColor = Color.Green
+                            DgStatus.Item(3, i).Style.ForeColor = Color.White
+
+                        End If
+
+
+
+
+
+
                         ' lblToolStrip.Text = "last update" + "(" + stockName + ")" + "========>" + DateTime.Now
                     Next
                 End If
@@ -299,15 +323,13 @@ Public Class Form1
                 i = (i - 1)
             Loop
         Catch _Exception As InvalidExpressionException
-
-
         Finally
-
         End Try
     End Sub
-
     Private Sub Timer1_Tick(sender As System.Object, e As System.EventArgs) Handles Timer1.Tick
-        Tableupdate()
+        If Timer1.Enabled = True Then
+            Tableupdate()
+        End If
 
     End Sub
 
@@ -341,10 +363,8 @@ Public Class Form1
                 BtnOff.Enabled = True
             End If
         Catch _Exception As Exception
-
-            'DgStatus.Rows.RemoveAt(e.RowIndex)
         Finally
-
+            Label3.Text = "Your select :" + ComboBox1.SelectedItem.ToString + "sec"
         End Try
     End Sub
 
@@ -353,35 +373,50 @@ Public Class Form1
     End Sub
 
     Private Sub DgStatus_CellEndEdit(sender As System.Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DgStatus.CellEndEdit
-        If Len(DgStatus.Item(0, e.RowIndex).Value.ToString) > 0 Then
-            If DgStatus.Item(0, e.RowIndex).Value = "null" Then
-                DgStatus.Rows.RemoveAt(e.RowIndex)
-            ElseIf IsNumeric(DgStatus.Item(0, e.RowIndex).Value) = False Or IsNumeric(DgStatus.Item(3, e.RowIndex).Value) = False Then
 
+        Try
+            If DgStatus.Item(0, e.RowIndex).Value Is Nothing Then
+                Return
+            End If
+
+            If Len(DgStatus.Item(0, e.RowIndex).Value.ToString) > 0 Then
+                If DgStatus.Item(0, e.RowIndex).Value = "null" Then
+                    DgStatus.Rows.RemoveAt(e.RowIndex)
+                ElseIf IsNumeric(DgStatus.Item(0, e.RowIndex).Value) = False Or IsNumeric(DgStatus.Item(3, e.RowIndex).Value) = False Then
+
+                    DgStatus.Rows.RemoveAt(e.RowIndex)
+                End If
+            Else
                 DgStatus.Rows.RemoveAt(e.RowIndex)
             End If
-        Else
-
-            DgStatus.Rows.RemoveAt(e.RowIndex)
-
-
-        End If
-        Dim i = 0
-        Dim a As Array
-        If DgStatus.Rows.Count - 1 > 1 Then
-            Do While (i < DgStatus.Rows.Count - 1)
-
-                If i = e.RowIndex Then
-                    Debug.Print(DgStatus.Item(0, e.RowIndex).Value)
-                ElseIf DgStatus.Item(0, i).Value = DgStatus.Item(0, i + 1).Value Then
-                    Debug.Print("same")
+            Dim count = DgStatus.Rows.Count - 2
+            Do While count >= -1
+                If DgStatus.Item(0, count - 1).Value = DgStatus.Item(0, e.RowIndex).Value Then
+                    DgStatus.Rows.RemoveAt(e.RowIndex)
                 End If
-                i = i + 1
+                count = count - 1
             Loop
-        End If
 
+        Catch _Exception As Exception
+
+        Finally
+            Tableupdate()
+        End Try
 
     End Sub
+    Private Sub DgStatus_ColumnHeaderMouseClick(sender As System.Object, e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles DgStatus.ColumnHeaderMouseClick
+        Tableupdate()
+    End Sub
+
+    Private Sub Form1_FormClosed(sender As System.Object, e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
+        If ready = True Then
+            dsStatus.WriteXml("data.xml")
+        End If
+        Application.Exit()
+
+    End Sub
+
+  
 End Class
 
 

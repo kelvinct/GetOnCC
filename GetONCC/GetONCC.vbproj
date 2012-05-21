@@ -99,6 +99,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.vb" />
+    <Compile Include="Dialog1.Designer.vb">
+      <DependentUpon>Dialog1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog1.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Form1.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -124,9 +130,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Setting.vb" />
     <Compile Include="STOCK.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Dialog1.resx">
+      <DependentUpon>Dialog1.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.vb</DependentUpon>
     </EmbeddedResource>
@@ -138,6 +148,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\Debug\Release\Config.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -150,9 +163,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\Debug\Config.xml" />
-    <Content Include="bin\Debug\Release\Config.xml" />
-    <Content Include="Config.xml" />
+    <Content Include="bin\Debug\Release\Settings.xml" />
+    <Content Include="bin\Release\Config.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Config.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Settings.xml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

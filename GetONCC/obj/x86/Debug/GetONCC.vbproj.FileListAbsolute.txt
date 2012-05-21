@@ -25,3 +25,4 @@ C:\Users\user\documents\visual studio 2010\Projects\GetONCC\GetONCC\bin\Debug\Ge
 C:\Users\user\documents\visual studio 2010\Projects\GetONCC\GetONCC\obj\x86\Debug\GetONCC.TrustInfo.xml
 C:\Users\user\documents\visual studio 2010\Projects\GetONCC\GetONCC\obj\x86\Debug\GetONCC.exe.manifest
 C:\Users\user\documents\visual studio 2010\Projects\GetONCC\GetONCC\obj\x86\Debug\GetONCC.application
+C:\Users\user\documents\visual studio 2010\Projects\GetONCC\GetONCC\obj\x86\Debug\GetONCC.Dialog1.resources

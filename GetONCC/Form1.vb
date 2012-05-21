@@ -19,34 +19,37 @@ Public Class Form1
     Private mNoOfUpdated As Integer
     Private mNoOfInserted As Integer
     Private mImportLogger As ImportLogger
+    Dim Config As New GetOnCCConfig
+    Dim SetConfig As New Settings
     Private ready As Boolean = False
     Private Sub Form1_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         BtnOn.Enabled = False
         BtnOff.Enabled = False
+
         GetStatus()
-        Dim FoundConfig As Boolean
-        dsStatus.ReadXml("data.xml")
-        Tableupdate()
-        Dim Config As New GetOnCCConfig
         Try
-            Config.loadXML("config.xml")
-            FoundConfig = True
-        Catch _Exception As Exception
-            FoundConfig = False
-            Debug.Print("config.xml is not found")
-        Finally
+            dsStatus.ReadXml(Application.StartupPath & "\" & "data.xml")
+            '   dsStatus.ReadXml(Application.StartupPath & "\" & "data.xml")
+            Tableupdate()
+            If SetConfig.IsExits = True Then
+                ComboBox1.SelectedIndex = SetConfig.GetSetting("time")
+                Label3.Text = "Your select :" + ComboBox1.SelectedItem.ToString + "sec"
+            Else
+                Label3.Text = "Settings.xml is not find"
+                SetConfig.initSettings()
+            End If
+           
+        Catch ex As Exception
+            Label3.Text = "data.xml is not find"
+            Me.Show()
+
+
         End Try
-        If FoundConfig = True Then
-            ' 'Label3.Text = DgStatus.Rows.Count
-            Dim TimeIntervial = Config.TimeIntervial
-            ComboBox1.SelectedIndex = TimeIntervial
-            Label3.Text = "Your select :" + ComboBox1.SelectedItem.ToString + "sec"
-        Else
-            Label3.Text = "Config.xml is not found"
-        End If
-        'mConfig.loadXML("config.xml")
-        'Dim Application = (mConfig.ApplicationName)
-        'dim ds as  DataSet = (DataSet) DgStatus.DataSource()
+      
+
+
+
+
 
     End Sub
     Private Function EncodeText(ByVal sText As String) As String
@@ -212,19 +215,11 @@ Public Class Form1
 
 
     Private Sub DgStatus__RowEnter(sender As System.Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DgStatus.RowEnter
-        Dim i As Integer
-        '  For i = 0 To DgStatus.Rows(e.RowIndex).Cells.Count - 1
-        DgStatus(0, e.RowIndex).Style _
-        .BackColor = Color.Yellow
-        '  Next i
+
     End Sub
 
     Private Sub DgStatus_RowLeave(sender As System.Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DgStatus.RowLeave
-        Dim i As Integer
-        'For i = 0 To DgStatus.Rows(e.RowIndex).Cells.Count - 1
-        DgStatus(0, e.RowIndex).Style _
-        .BackColor = Color.Empty
-        '  Next i
+
     End Sub
 
     Private Sub DgStatus_CellValidated(sender As System.Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DgStatus.CellValidated
@@ -241,8 +236,6 @@ Public Class Form1
                 If a(0) = "null" Then
                     Return
                 End If
-                'Debug.Print(a(0))
-                ' DgStatus.Item(e.ColumnIndex, e.RowIndex).Value = Val(a(0))
                 DgStatus.Item(e.ColumnIndex + 1, e.RowIndex).Value = (a(1))
                 DgStatus.Item(e.ColumnIndex + 2, e.RowIndex).Value = (a(2))
                 DgStatus.Item(e.ColumnIndex + 3, e.RowIndex).Value = (a(3))
@@ -341,17 +334,17 @@ Public Class Form1
 
     Private Sub ComboBox1_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles ComboBox1.SelectedIndexChanged
         Try
-            If ComboBox1.SelectedIndex >= 0 Then
-                BtnOn.Enabled = True
-                BtnOff.Enabled = False
-            End If
-        Catch _Exception As Exception
 
-            'DgStatus.Rows.RemoveAt(e.RowIndex)
-        Finally
+      
+        If ComboBox1.SelectedIndex >= 0 Then
+            BtnOn.Enabled = True
+            BtnOff.Enabled = False
+            Label3.Text = "Your select :" + ComboBox1.SelectedItem.ToString + "sec"
+        End If
+
+        Catch ex As Exception
 
         End Try
-
     End Sub
 
     Private Sub BtnON_Click(sender As System.Object, e As System.EventArgs) Handles BtnOn.Click
@@ -410,13 +403,25 @@ Public Class Form1
 
     Private Sub Form1_FormClosed(sender As System.Object, e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
         If ready = True Then
-            dsStatus.WriteXml("data.xml")
+            dsStatus.WriteXml(Application.StartupPath & "\" & "data.xml")
+            SetConfig.SetSetting("time", ComboBox1.SelectedIndex.ToString)
         End If
         Application.Exit()
+    End Sub
+  
+ 
+
+    Private Sub Button2_Click_1(sender As System.Object, e As System.EventArgs)
+        Dim setConfig As New Settings
+
+        setConfig.SetSetting("time", ComboBox1.SelectedIndex.ToString)
+
 
     End Sub
 
-  
+    Private Sub DgStatus_CellContentClick(sender As System.Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DgStatus.CellContentClick
+
+    End Sub
 End Class
 
 

@@ -1,21 +1,22 @@
 <?xml version="1.0" standalone="yes"?>
 <NewDataSet>
   <Table1>
-    <Stock_x0020_Code>6</Stock_x0020_Code>
-    <stock_x0020_Name>電能實業</stock_x0020_Name>
-    <Price>57.950</Price>
-    <Change>-0.150</Change>
-  </Table1>
-  <Table1>
     <Stock_x0020_Code>5</Stock_x0020_Code>
     <stock_x0020_Name>匯豐控股</stock_x0020_Name>
-    <Price>62.950</Price>
-    <Change>-0.800</Change>
+    <Price>63.100</Price>
+    <Change>-0.650</Change>
   </Table1>
   <Table1>
-    <Stock_x0020_Code>358</Stock_x0020_Code>
-    <stock_x0020_Name>江西銅業股份</stock_x0020_Name>
-    <Price>16.300</Price>
-    <Change>0.220</Change>
+    <Stock_x0020_Code>939</Stock_x0020_Code>
+    <stock_x0020_Name>建設銀行</stock_x0020_Name>
+    <Price>5.200</Price>
+    <Change>0.020</Change>
   </Table1>
+  <Table1>
+    <Stock_x0020_Code>66</Stock_x0020_Code>
+    <stock_x0020_Name>港鐵公司</stock_x0020_Name>
+    <Price>25.500</Price>
+    <Change>-0.050</Change>
+  </Table1>
+  <Table1 />
 </NewDataSet>

@@ -54,11 +54,11 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>CBot6JSMvFnM/PL+PdIcWkj7hdc=</dsig:DigestValue>
+        <dsig:DigestValue>rXXHde4vKosYo+M7cjjJnz6taS0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="bin\Debug\Config.xml" size="101" writeableType="applicationData">
+  <file name="bin\Debug\Release\Config.xml" size="101" writeableType="applicationData">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
@@ -67,7 +67,16 @@
       <dsig:DigestValue>z6war4zf3aNHgAHiP7Q9/VO2lbE=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="bin\Debug\Release\Config.xml" size="101" writeableType="applicationData">
+  <file name="bin\Debug\Release\Settings.xml" size="91" writeableType="applicationData">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>1PfpjpsR0pahfaewq0Lw+m8oVGE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="bin\Release\Config.xml" size="101" writeableType="applicationData">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
@@ -83,6 +92,15 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
       <dsig:DigestValue>z6war4zf3aNHgAHiP7Q9/VO2lbE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Settings.xml" size="91" writeableType="applicationData">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>1PfpjpsR0pahfaewq0Lw+m8oVGE=</dsig:DigestValue>
     </hash>
   </file>
   <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">

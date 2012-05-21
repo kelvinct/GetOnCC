@@ -38,9 +38,11 @@ Partial Class Form1
         Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
         Me.LineShape1 = New Microsoft.VisualBasic.PowerPacks.LineShape()
         Me.Label3 = New System.Windows.Forms.Label()
+        Me.DataSet2 = New System.Data.DataSet()
         CType(Me.DataSet1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DgStatus, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StatusStrip1.SuspendLayout()
+        CType(Me.DataSet2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'DataSet1
@@ -164,6 +166,10 @@ Partial Class Form1
         Me.Label3.TabIndex = 12
         Me.Label3.Text = "Label3"
         '
+        'DataSet2
+        '
+        Me.DataSet2.DataSetName = "NewDataSet"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
@@ -186,6 +192,7 @@ Partial Class Form1
         CType(Me.DgStatus, System.ComponentModel.ISupportInitialize).EndInit()
         Me.StatusStrip1.ResumeLayout(False)
         Me.StatusStrip1.PerformLayout()
+        CType(Me.DataSet2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -205,5 +212,6 @@ Partial Class Form1
     Friend WithEvents LineShape1 As Microsoft.VisualBasic.PowerPacks.LineShape
     Friend WithEvents ShowTime As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents DataSet2 As System.Data.DataSet
 
 End Class

@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="yes"?>
 <NewDataSet>
   <Settings>
-    <Key>Time</Key>
-    <Value>-1</Value>
+    <Key>time</Key>
+    <Value>0</Value>
   </Settings>
 </NewDataSet>

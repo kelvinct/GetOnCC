@@ -19,7 +19,7 @@ Public Class Form1
     Private mNoOfUpdated As Integer
     Private mNoOfInserted As Integer
     Private mImportLogger As ImportLogger
-    Dim Config As New GetOnCCConfig
+    ' Dim Config As New GetOnCCConfig
     Dim SetConfig As New Settings
     Private ready As Boolean = False
     Private Sub Form1_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
@@ -169,27 +169,34 @@ Public Class Form1
             Dim DescriptionCoulumn As DataColumn
             Dim nameCoulumn As DataColumn
             Dim CheckCoulumn As DataColumn
+            Dim UpperCoulumn As DataColumn
+            Dim BelowCoulumn As DataColumn
             Dim dr As DataRow
 
             dt = New DataTable()
-            ModuleColumn = New DataColumn("Stock Code", Type.GetType("System.String"))
-            DescriptionCoulumn = New DataColumn("stock Name", Type.GetType("System.String"))
+            ModuleColumn = New DataColumn("StockCode", Type.GetType("System.String"))
+            DescriptionCoulumn = New DataColumn("stockName", Type.GetType("System.String"))
             nameCoulumn = New DataColumn("Price", Type.GetType("System.String"))
             CheckCoulumn = New DataColumn("Change", Type.GetType("System.String"))
-
+            BelowCoulumn = New DataColumn("Below", Type.GetType("System.String"))
+            UpperCoulumn = New DataColumn("Upper", Type.GetType("System.String"))
             dt.Columns.Add(ModuleColumn)
             dt.Columns.Add(DescriptionCoulumn)
             dt.Columns.Add(nameCoulumn)
             dt.Columns.Add(CheckCoulumn)
+            dt.Columns.Add(BelowCoulumn)
+            dt.Columns.Add(UpperCoulumn)
             ready = True
             dsStatus.Tables.Add(dt)
 
             DgStatus.DataSource = dsStatus.Tables(0)
             dsStatus.Tables(0).Clear()
-            DgStatus.Columns("Stock Code").Width = 100
-            DgStatus.Columns("Stock Name").Width = 100
-            DgStatus.Columns("Price").Width = 100
-            DgStatus.Columns("Change").Width = 100
+            DgStatus.Columns("StockCode").Width = 70
+            DgStatus.Columns("StockName").Width = 100
+            DgStatus.Columns("Price").Width = 50
+            DgStatus.Columns("Change").Width = 50
+            DgStatus.Columns("Below").Width = 50
+            DgStatus.Columns("Upper").Width = 50
             '   DgStatus.Columns("Check").HeaderText = "Checking"
             ' dr = dsStatus.Tables(0).NewRow
             '  dr(0) = 5
@@ -228,7 +235,7 @@ Public Class Form1
             Dim headerText As String = DgStatus.Columns(e.ColumnIndex).HeaderText
 
             ' Abort validation if cell is not in the CompanyName column.
-            If Not headerText.Equals("Stock Code") Then Return
+            If Not headerText.Equals("StockCode") Then Return
             Dim a As Array
             Dim StockCode = (DgStatus.Item(e.ColumnIndex, e.RowIndex).Value.ToString())
             If IsNumeric(StockCode) Then
@@ -239,6 +246,11 @@ Public Class Form1
                 DgStatus.Item(e.ColumnIndex + 1, e.RowIndex).Value = (a(1))
                 DgStatus.Item(e.ColumnIndex + 2, e.RowIndex).Value = (a(2))
                 DgStatus.Item(e.ColumnIndex + 3, e.RowIndex).Value = (a(3))
+                If DgStatus.Item(e.ColumnIndex + 2, e.RowIndex).Value < DgStatus.Item(e.ColumnIndex + 4, e.RowIndex).Value Then
+                    DgStatus.Item(e.ColumnIndex + 1, e.RowIndex).Style.ForeColor = Color.Red
+                Else
+                    DgStatus.Item(e.ColumnIndex + 1, e.RowIndex).Style.ForeColor = Color.Green
+                End If
 
             Else
                 Dim i As Integer = (DgStatus.Rows.Count - 1)
@@ -275,7 +287,10 @@ Public Class Form1
             Dim i As Integer = (DgStatus.Rows.Count - 1)
             Dim a As Array
             Do While (i >= 0)
+
+
                 If IsNumeric(DgStatus.Item(0, i).Value) = True Then
+
                     Dim stockName = ""
                     a = EncodeText(GetOnCC(DgStatus.Item(0, i).Value)).Split(",")
                     For Each dr As DataGridViewRow In DgStatus.Rows
@@ -283,6 +298,10 @@ Public Class Form1
                         DgStatus.Item(1, i).Value = a(1)
                         DgStatus.Item(2, i).Value = a(2)
                         DgStatus.Item(3, i).Value = a(3)
+                        '  If a(3) = "null" Then
+                        'DgStatus.Rows.RemoveAt(i)
+
+                        '  End If
                         If DgStatus.Item(3, i).Value < 0 Then
 
                             DgStatus.Item(3, i).Style.BackColor = Color.Red
@@ -368,6 +387,15 @@ Public Class Form1
     Private Sub DgStatus_CellEndEdit(sender As System.Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DgStatus.CellEndEdit
 
         Try
+            Dim a As Array
+            a = EncodeText(GetOnCC(DgStatus.Item(0, e.RowIndex).Value)).Split(",")
+            DgStatus.Item(1, e.RowIndex).Value = a(1)
+            DgStatus.Item(2, e.RowIndex).Value = a(2)
+            DgStatus.Item(3, e.RowIndex).Value = a(3)
+            If DgStatus.Item(3, e.RowIndex).Value = "null" Then
+                DgStatus.Rows.RemoveAt(e.RowIndex)
+                Return
+            End If
             If DgStatus.Item(0, e.RowIndex).Value Is Nothing Then
                 Return
             End If
@@ -384,14 +412,17 @@ Public Class Form1
             End If
             Dim count = DgStatus.Rows.Count - 2
             Do While count >= -1
-                If DgStatus.Item(0, count - 1).Value = DgStatus.Item(0, e.RowIndex).Value Then
-                    DgStatus.Rows.RemoveAt(e.RowIndex)
+                If count <> e.RowIndex Then
+                    If DgStatus.Item(0, count).Value = DgStatus.Item(0, e.RowIndex).Value Then
+                        DgStatus.Rows.RemoveAt(e.RowIndex)
+                    End If
+
                 End If
                 count = count - 1
             Loop
-
+            DgStatus.Item(1, e.RowIndex).Style.ForeColor = Color.Green
         Catch _Exception As Exception
-
+            ' DgStatus.Rows.RemoveAt(e.RowIndex)
         Finally
             Tableupdate()
         End Try
@@ -402,10 +433,10 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_FormClosed(sender As System.Object, e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
-        If ready = True Then
-            dsStatus.WriteXml(Application.StartupPath & "\" & "data.xml")
-            SetConfig.SetSetting("time", ComboBox1.SelectedIndex.ToString)
-        End If
+
+        dsStatus.WriteXml(Application.StartupPath & "\" & "data.xml")
+        SetConfig.SetSetting("time", ComboBox1.SelectedIndex.ToString)
+
         Application.Exit()
     End Sub
   
@@ -421,6 +452,12 @@ Public Class Form1
 
     Private Sub DgStatus_CellContentClick(sender As System.Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DgStatus.CellContentClick
 
+    End Sub
+
+    Private Sub DgStatus_CellValidating(sender As System.Object, e As System.Windows.Forms.DataGridViewCellValidatingEventArgs) Handles DgStatus.CellValidating
+
+        DgStatus.Item(1, e.RowIndex).Style.ForeColor = Color.Red
+        
     End Sub
 End Class
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <Table1>
+    <StockCode>1</StockCode>
+    <stockName>長江實業</stockName>
+    <Price>91.850</Price>
+    <Change>0.150</Change>
+    <Below>100</Below>
+  </Table1>
+  <Table1>
+    <StockCode>2</StockCode>
+    <stockName>中電控股</stockName>
+    <Price>63.850</Price>
+    <Change>-0.450</Change>
+    <Below>11</Below>
+  </Table1>
+  <Table1>
+    <StockCode>3</StockCode>
+    <stockName>香港中華煤氣</stockName>
+    <Price>18.280</Price>
+    <Change>0.220</Change>
+    <Below>11</Below>
+  </Table1>
+  <Table1 />
+</NewDataSet>

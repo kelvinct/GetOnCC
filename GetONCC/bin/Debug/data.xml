@@ -1,25 +1,22 @@
 <?xml version="1.0" standalone="yes"?>
-<NewDataSet>
-  <Table1>
+<StockMarket>
+  <Quote>
     <StockCode>1</StockCode>
     <stockName>長江實業</stockName>
-    <Price>91.850</Price>
-    <Change>0.150</Change>
-    <Below>100</Below>
-  </Table1>
-  <Table1>
-    <StockCode>2</StockCode>
-    <stockName>中電控股</stockName>
-    <Price>63.850</Price>
-    <Change>-0.450</Change>
-    <Below>11</Below>
-  </Table1>
-  <Table1>
+    <Price>92.500</Price>
+    <Change>0.650</Change>
+  </Quote>
+  <Quote>
     <StockCode>3</StockCode>
     <stockName>香港中華煤氣</stockName>
-    <Price>18.280</Price>
-    <Change>0.220</Change>
-    <Below>11</Below>
-  </Table1>
-  <Table1 />
-</NewDataSet>
+    <Price>18.720</Price>
+    <Change>0.440</Change>
+  </Quote>
+  <Quote>
+    <StockCode>939</StockCode>
+    <stockName>建設銀行</stockName>
+    <Price>5.250</Price>
+    <Change>0.050</Change>
+  </Quote>
+  <Quote />
+</StockMarket>
